@@ -22,15 +22,15 @@ import { getUser } from '../../services/slices/userSlice';
 const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const background = location.state?.background; // Сохраняем background в переменную для удобства
+  const background = location.state?.background;
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getUser());
-  }, [dispatch]); // Добавляем dispatch в массив зависимостей (рекомендация ESLint)
+  }, [dispatch]);
 
   function handleModalClose() {
-    navigate(-1); // Возвращаемся на предыдущую страницу, чтобы закрыть модальное окно
+    navigate(-1);
   }
 
   return (

@@ -10,7 +10,6 @@ import {
 } from '../../utils/burger-api';
 import { setCookie, deleteCookie } from '../../utils/cookie';
 
-// Типизация состояния
 interface TUserState {
   isAuthChecked: boolean;
   user: TUser | null;
@@ -18,15 +17,13 @@ interface TUserState {
   error: string | null;
 }
 
-// Начальное состояние
 export const initialState: TUserState = {
-  isAuthChecked: false, // Флаг для проверки, завершился ли первоначальный запрос на получение пользователя
+  isAuthChecked: false,
   user: null,
   isLoading: false,
   error: null
 };
 
-// Асинхронные Thunks
 export const registerUser = createAsyncThunk(
   'user/register',
   async (data: TRegisterData) => {
@@ -64,19 +61,16 @@ export const logoutUser = createAsyncThunk('user/logout', async () => {
   localStorage.removeItem('refreshToken');
 });
 
-// Создание слайса
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    // Редьюсер для установки флага проверки авторизации
     setAuthChecked: (state, action) => {
       state.isAuthChecked = action.payload;
     }
   },
   extraReducers: (builder) => {
     builder
-      // Общие состояния загрузки
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -94,7 +88,6 @@ const userSlice = createSlice({
         state.error = null;
       })
 
-      // Обработка ошибок
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message || 'Registration failed';
@@ -113,7 +106,6 @@ const userSlice = createSlice({
         state.error = action.error.message || 'Update failed';
       })
 
-      // Успешное выполнение
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload;

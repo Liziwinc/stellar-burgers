@@ -1,10 +1,16 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import userReducer from './slices/userSlice';
-// Здесь будете импортировать другие редьюсеры, например, ingredients, orders и т.д.
+import ingredientsReducer from './slices/ingredientsSlice';
+import constructorReducer from './slices/constructorSlice';
+import feedReducer from './slices/feedSlice';
+import ordersReducer from './slices/ordersSlice';
 
 const rootReducer = combineReducers({
-  user: userReducer
-  // ...другие редьюсеры
+  user: userReducer,
+  ingredients: ingredientsReducer,
+  burgerConstructor: constructorReducer,
+  feed: feedReducer,
+  orders: ordersReducer
 });
 
 export default rootReducer;
