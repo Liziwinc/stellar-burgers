@@ -6,7 +6,9 @@ import {
   loginUserApi,
   logoutApi,
   getUserApi,
-  updateUserApi
+  updateUserApi,
+  forgotPasswordApi,
+  resetPasswordApi
 } from '../../utils/burger-api';
 import { setCookie, deleteCookie } from '../../utils/cookie';
 
@@ -60,6 +62,20 @@ export const logoutUser = createAsyncThunk('user/logout', async () => {
   deleteCookie('accessToken');
   localStorage.removeItem('refreshToken');
 });
+
+export const forgotPassword = createAsyncThunk(
+  'user/forgotPassword',
+  async ({ email }: { email: string }) => {
+    await forgotPasswordApi({ email });
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  'user/resetPassword',
+  async (data: { password: string; token: string }) => {
+    await resetPasswordApi(data);
+  }
+);
 
 const userSlice = createSlice({
   name: 'user',
@@ -128,6 +144,29 @@ const userSlice = createSlice({
       .addCase(logoutUser.fulfilled, (state) => {
         state.isLoading = false;
         state.user = null;
+      })
+
+      .addCase(forgotPassword.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(forgotPassword.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(forgotPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message || 'Password reset request failed';
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(resetPassword.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message || 'Password reset failed';
       });
   }
 });
