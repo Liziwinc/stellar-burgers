@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useEffect } from 'react'; // Добавляем useEffect
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from '../../services/store';
@@ -18,6 +18,12 @@ export const BurgerConstructor: FC = () => {
 
   const orderRequest = status === 'loading';
 
+  useEffect(() => {
+    if (newOrder) {
+      dispatch(clearConstructor());
+    }
+  }, [newOrder, dispatch]);
+
   const onOrderClick = () => {
     if (!constructorItems.bun) return;
     if (!user) {
@@ -26,15 +32,13 @@ export const BurgerConstructor: FC = () => {
 
     const ingredientIds = [
       constructorItems.bun._id,
-      ...constructorItems.mains.map((ing) => ing._id),
-      constructorItems.bun._id
+      ...constructorItems.mains.map((ing) => ing._id)
     ];
     dispatch(createNewOrder(ingredientIds));
   };
 
   const closeOrderModal = () => {
     dispatch(clearNewOrder());
-    dispatch(clearConstructor());
   };
 
   const price = useMemo(

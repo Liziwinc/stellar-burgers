@@ -29,6 +29,7 @@ export const OrderCardUI: FC<OrderCardUIProps> = memo(
       <h4 className={`pt-6 text text_type_main-medium ${styles.order_name}`}>
         {orderInfo.name}
       </h4>
+      <OrderStatus status={orderInfo.status} />
       {location.pathname === '/profile/orders' && (
         <OrderStatus status={orderInfo.status} />
       )}
