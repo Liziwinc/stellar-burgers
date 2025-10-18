@@ -79,11 +79,13 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         <CurrencyIcon type='primary' />
       </div>
       <Button
+        data-cy-order
         htmlType='button'
         type='primary'
         size='large'
         children='Оформить заказ'
         onClick={onOrderClick}
+        disabled={!constructorItems.bun || constructorItems.mains.length === 0}
       />
     </div>
 
